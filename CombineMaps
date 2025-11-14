@@ -1,1 +1,81 @@
+package com.test.Practise_Project;
+import java.util.Map;
+import java.util.TreeMap;
 
+public class CombineTreeMapKeysExample {
+
+
+    static class ProductTicketCRuleDto {
+        private final int id;
+        private final String name;
+
+        public ProductTicketCRuleDto(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + id + ", " + name + ")";
+        }
+    }
+
+
+    private static Map<Integer, ProductTicketCRuleDto> combine(
+            Map<Integer, ProductTicketCRuleDto> highOrder,
+            Map<Integer, ProductTicketCRuleDto> lowOrder) {
+
+
+        TreeMap<Integer, ProductTicketCRuleDto> combined = new TreeMap<>();
+
+
+        combined.putAll(highOrder);
+
+
+        int nextKey = combined.isEmpty() ? 0 : combined.lastKey() + 1;
+
+
+        for (ProductTicketCRuleDto dto : lowOrder.values()) {
+            combined.put(nextKey++, dto);
+        }
+
+        return combined;
+    }
+
+    public static void main(String[] args) {
+
+
+        Map<Integer, ProductTicketCRuleDto> highOrder = new TreeMap<>();
+        highOrder.put(3, new ProductTicketCRuleDto(3, "Rule3"));
+        highOrder.put(2, new ProductTicketCRuleDto(2, "Rule2"));
+        highOrder.put(1, new ProductTicketCRuleDto(1, "Rule1"));
+        highOrder.put(0, new ProductTicketCRuleDto(0, "Rule0"));
+
+
+        Map<Integer, ProductTicketCRuleDto> lowOrder = new TreeMap<>();
+        lowOrder.put(4, new ProductTicketCRuleDto(4, "Rule4"));
+        lowOrder.put(3, new ProductTicketCRuleDto(3, "Rule3"));
+        lowOrder.put(2, new ProductTicketCRuleDto(2, "Rule2"));
+        lowOrder.put(1, new ProductTicketCRuleDto(1, "Rule1"));
+        lowOrder.put(0, new ProductTicketCRuleDto(0, "Rule0"));
+
+
+        Map<Integer, ProductTicketCRuleDto> result = combine(highOrder, lowOrder);
+
+
+        System.out.println("Combined TreeMap (sorted, unique keys):");
+        for (Map.Entry<Integer, ProductTicketCRuleDto> entry : result.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+    }
+}
+
+ 
